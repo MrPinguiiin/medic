@@ -22,12 +22,14 @@ class IndexMedicine extends Component
     protected $queryString = ['q'];
     public int $perPage = 10;
     public $units;
+
     public $categories;
     public $filter_unit;
     public $filter_category;
     public $filter_expired;
-    // public $medicine;
+    // public $medicines;
     public $selectedMedicine;
+
 
     public function render() : View
     {
@@ -52,6 +54,7 @@ class IndexMedicine extends Component
     {
         $this->perPage += 10;
     }
+
 
     public function deleteMedicine(array $medicine) : void
     {

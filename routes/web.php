@@ -3,8 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Category\IndexCategory;
 use App\Livewire\Dashboard;
+use App\Livewire\EditMedicine as LivewireEditMedicine;
 use App\Livewire\Medicine\IndexMedicine;
 use App\Livewire\Medicine\AddMedicine;
+use App\Livewire\Medicine\EditMedicine;
 use App\Livewire\Unit\IndexUnit;
 use App\Livewire\User\UserProfile;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +30,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/medicines', IndexMedicine::class)->name('medicines.index');
     Route::get('/medicines/create', AddMedicine::class)->name('medicines.create');
+    Route::get('/medicines/edit-medicines', EditMedicine::class)->name('medicines.edit');
+
 
     Route::get('/categories', IndexCategory::class)->name('categories.index');
 
