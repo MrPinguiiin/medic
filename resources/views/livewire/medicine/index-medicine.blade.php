@@ -48,7 +48,7 @@
             <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">No.</th>
+                        <th scope="col" class="px-6 py-3">Id</th>
                         <th scope="col" class="px-6 py-3"> Name</th>
                         <th scope="col" class="px-6 py-3"> Stock</th>
                         <th scope="col" class="px-6 py-3"> Unit</th>
@@ -75,7 +75,8 @@
                             <td class="px-6 py-4">Rp {{number_format($medicine->selling_price, 0, ',','.')}}</td>
                             <td class="px-6 py-4">{{ $medicine->supplier->name}}</td>
                             <td class="px-6 py-4">
-                                <a href="/medicines/edit-medicines" wire:click="editMedicine({{ $medicine }})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <button type="button" class="block font-medium text-green-600 dark:text-green-400 hover:underline">Details</button>
+                                <a href="/" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                 <button wire:click="deleteMedicine({{ $medicine }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
                             </td>
                         </tr>
@@ -112,7 +113,7 @@
                     </x-secondary-button>
 
                     <x-danger-button class="ml-3" type="submit" wire:click="destroyMedicine" wire:submit.attr="disabled" wire:target="destroyMedicine">
-                        {{ __('Delete Category') }}
+                        {{ __('Delete Medicine') }}
                     </x-danger-button>
                 </div>
             </div>

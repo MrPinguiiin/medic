@@ -6,6 +6,10 @@ use App\Livewire\Dashboard;
 use App\Livewire\EditMedicine as LivewireEditMedicine;
 use App\Livewire\Medicine\IndexMedicine;
 use App\Livewire\Medicine\AddMedicine;
+use App\Livewire\Purchase\AddPurchase;
+use App\Livewire\Purchase\IndexPurchase;
+use App\Livewire\Sales\IndexSales;
+use App\Livewire\Supplier\IndexSupplier;
 use App\Livewire\Medicine\EditMedicine;
 use App\Livewire\Unit\IndexUnit;
 use App\Livewire\User\UserProfile;
@@ -36,6 +40,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/categories', IndexCategory::class)->name('categories.index');
 
     Route::get('/units', IndexUnit::class)->name('units.index');
+    Route::get('/suppliers', IndexSupplier::class)->name('suppliers.index');
+    Route::get('/sales', IndexSales::class)->name('sales.index');
+    Route::get('/purchases', IndexPurchase::class)->name('purchases.index');
+    Route::get('/purchases/create', AddPurchase::class)->name('purchases.create');
 });
 
 Route::middleware('auth')->group(function () {

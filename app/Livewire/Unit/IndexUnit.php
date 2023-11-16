@@ -4,6 +4,7 @@ namespace App\Livewire\Unit;
 
 use Livewire\Component;
 use App\Models\Unit;
+use Illuminate\Contracts\View\View;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 
@@ -20,10 +21,15 @@ class IndexUnit extends Component
     public array $selectedUnit;
     public $name;
 
-    public function render()
+    public string $sortField = 'created_at';
+    public string $sortDirection = 'asc';
+    protected array $sortableField = ['name', 'created_at'];
+
+    public function render() : View
     {
         $units = Unit::where('name', 'like', '%'.$this->search.'%')
-        ->latest()->paginate($this->perPage);
+        ->orderBy($this->sortField ?? 'created_at', $this->sortDirection)
+        ->paginate($this->perPage);
 
         return view('livewire.unit.index-unit', ['units' => $units]);
     }
@@ -43,6 +49,7 @@ class IndexUnit extends Component
             'name' => $this->name,
         ]);
         $this->reset('name');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Unit Has Been Created!']);
     }
 
     public function updateUnit() : void
@@ -55,6 +62,7 @@ class IndexUnit extends Component
             'name' => $this->selectedUnit['name'],
         ]);
         $this->reset('selectedUnit');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Unit Has Been Updated!']);
     }
 
     public function deleteUnit(array $unit) : void
@@ -66,8 +74,9 @@ class IndexUnit extends Component
     public function destroyUnit() : void
     {
         Unit::where('id',$this->selectedUnit)->delete();
-        $this->dispatch('close-modal');
         $this->reset('selectedUnit');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Unit Has Been Deleted!']);
+
     }
 
     public function clearForm(): void
@@ -78,5 +87,17 @@ class IndexUnit extends Component
     public function loadMore() : void
     {
         $this->perPage += 10;
+    }
+
+    public function sortBy(string $field) : void
+    {
+        if(in_array($field, $this->sortableField, true)){
+            if ($this->sortField === $field) {
+                $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                $this->sortDirection = 'asc';
+            }
+            $this->sortField = $field;
+        }
     }
 }
