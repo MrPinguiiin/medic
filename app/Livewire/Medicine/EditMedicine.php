@@ -23,7 +23,7 @@ class EditMedicine extends Component
     public $medicine;
 
     public $id, $name, $stock, $storage, $expired, $description, $purchase_price, $selling_price, $unit_id, $category_id, $supplier_id;
-    public function mount(medicine $medicine){
+    public function mount(Medicine $medicine){
 
         $this->id = $medicine->id;
         $this->name = $medicine->name;
@@ -49,9 +49,6 @@ class EditMedicine extends Component
 
     public function editMedicine() {
 
-
-        $medicine = Medicine::find($this->id);
-
         $this->validate([
             'name' => 'required|string|max:250',
             'stock' => 'required|integer|min_digits:1|max_digits:1000000',
@@ -76,8 +73,10 @@ class EditMedicine extends Component
             'categroy_id.required'=> 'must input',
             'supplier_id.required'=> 'must input',
 
-    ]);
+        ]);
 
+
+        $medicine = Medicine::find($this->id);
     $medicine->update([
 
     'name' => $this->name,
@@ -86,7 +85,7 @@ class EditMedicine extends Component
     'expired' => $this->expired,
     'description' => $this->description,
     'purchase_price' => $this->purchase_price,
-    'seliing_price' => $this->selling_price,
+    'selling_price' => $this->selling_price,
     'unit_id' => $this->unit_id,
     'category_id' => $this->category_id,
     'supplier_id' => $this->supplier_id,
@@ -95,6 +94,14 @@ class EditMedicine extends Component
 
     $this->reset();
     $this->redirect('/medicines', navigate: true);
+    $this->dispatch('notify', ['message' => 'Medicine Has Been Update!', 'status' => 'success']);
 
     }
+
+    public function clearForm(){
+
+        $this->reset('name', 'stock', 'storage', 'expired', 'description', 'purchase_price', 'selling_price', 'unit_id', 'category_id', 'supplier_id' );
+    }
+
+
 }

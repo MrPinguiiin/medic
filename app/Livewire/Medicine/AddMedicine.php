@@ -86,7 +86,6 @@ class AddMedicine extends Component
         }catch(\Exception $e){
             throw($e);
         }
-        $this->dispatch('notify', ['status' => 'success', 'message' => 'Medicine Has Been Created!']);
         return redirect()->route('medicines.index');
 
     }

@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\Medicine;
 use App\Models\Unit;
 use App\Models\Category;
+use App\Models\Purchase;
 use Illuminate\Support\Facades\DB;
 
 
@@ -22,19 +23,27 @@ class IndexMedicine extends Component
     protected $queryString = ['q'];
     public int $perPage = 10;
     public $units;
-
+    public $med;
+    public $cat;
     public $categories;
     public $filter_unit;
     public $filter_category;
     public $filter_expired;
     // public $medicines;
     public $selectedMedicine;
+    public $selectedUnit;
+    public $selectedCategory;
+
+    public $total_purchase;
+    public $purchases;
+    public $ex;
 
 
     public function render() : View
     {
         $this->units = Unit::all();
         $this->categories = Category::all();
+        $this->purchases = Purchase::all();
         $today = $this->filter_expired != null ? today()->format('Y-m-d') : '';
 
         return view('livewire.medicine.index-medicine',
@@ -61,6 +70,38 @@ class IndexMedicine extends Component
     {
         $this->selectedMedicine = $medicine;
         $this->dispatch('open-modal', 'delete-medicine');
+    }
+
+
+    public function editMedicine(array $medicine) : void
+    {
+
+        $this->selectedMedicine = $medicine;
+        // $this->selectedMedicine['expired'] = $medicine['expired'];
+        $this->ex = $medicine['expired'];
+        $this->dispatch('open-modal', 'edit-medicine');
+        // dd($medicine);
+    }
+
+    public function updatedUserId(){
+    $this->units = Unit::where('id', $this->userid->id)->get();
+    }
+
+    public function updateMedicine(){
+
+        $this->dispatch('close-modal');
+
+        $this->validate([
+            'selectedMedicine.name' => 'required|string|max:50',
+            'selectedMedicinee.expired' => 'required|date_format:Y-m-d',
+        ]);
+
+        Medicine::where('id',$this->selectedMedicine['id'])->update([
+            'name' => $this->selectedCategory['name'],
+            'expired' => $this->selectedCategory['expired']
+        ]);
+        $this->reset('selectedMedicine');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Category Has Been Updated!']);
     }
 
     public function destroyMedicine() : void
@@ -92,6 +133,4 @@ class IndexMedicine extends Component
         $this->dispatch('close-modal');
         $this->reset('selectedMedicine');
     }
-
-
 }

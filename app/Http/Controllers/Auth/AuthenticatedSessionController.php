@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
         $url = "https://www.google.com/recaptcha/api/siteverify";
 
         $body = [
-            'secret' => '6LfP7Q8pAAAAAFh9EHS8eNvQdkqXjck0YrNZyaDl',
+            'secret' => '6LdYVBgpAAAAANiPRXGbayuTSNMUVwWM3BkvsL8I', //ini belum diubah
             'response' => $recaptcha_response,
             'remoteip' => IpUtils::anonymize($request->ip()) //anonymize the ip to be GDPR compliant. Otherwise just pass the default ip address
         ];
@@ -56,7 +56,7 @@ class AuthenticatedSessionController extends Controller
         }
 
 
-        $request->authenticate();
+        $request->authenticateate();
 
         $request->session()->regenerate();
 

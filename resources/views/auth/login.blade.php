@@ -24,7 +24,7 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <div class="g-recaptcha mt-4" data-sitekey=6LfP7Q8pAAAAAIbHZ8eVgrUlr3n3wee5yHPKAAvP></div>
+        <div class="g-recaptcha mt-4" data-sitekey=6LdYVBgpAAAAAOGL57Fg0WBynJ6UJCNtmGQYqu4z></div>
 
         <!-- Remember Me -->
         <div class="block mt-4">

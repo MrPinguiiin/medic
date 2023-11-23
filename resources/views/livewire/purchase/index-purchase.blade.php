@@ -61,7 +61,7 @@
                             <td class="px-6 py-4"><button wire:click="openPurchaseMedicine({{ $purchase }})" class="text-green-400">Details</button></td>
                             <td class="px-6 py-4">{{ $purchase->updated_at->diffForHumans() }}</td>
                             <td class="px-6 py-4">
-                                <a href="/" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                {{-- <a href="{{ route('purchases.edit') }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a> --}}
                                 <button wire:click="deletePurchase({{ $purchase->id }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
                             </td>
                         </tr>

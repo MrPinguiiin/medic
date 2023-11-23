@@ -94,6 +94,7 @@ class AddPurchase extends Component
         return view('livewire.purchase.add-purchase');
     }
 
+    //Function Go To Medicine Form
     public function appendNewPurchase() : void
     {
         $this->validate([
@@ -107,6 +108,7 @@ class AddPurchase extends Component
         $this->dispatch('set-tab', 'medicine_form');
     }
 
+    // Function Go to Summary
     public function appendNewMedicine() : void
     {
         $this->validateMedicine();
@@ -123,26 +125,11 @@ class AddPurchase extends Component
             'supplier_id' => $this->supplier_id,
         ];
         $this->clearNewMedicineForm();
+        $this->dispatch('notify', ['message' => 'Medicine Has Been Added!', 'status' =>'success']);
         $this->getSummaryData();
     }
 
-    public function unsetAMedicine( array $med ) : void
-    {
-        // unset an item of medicine from $this->newMedicines
-        // return void
-        if( ($key = array_search($med, $this->newMedicines) ) !== false ) {
-            unset($this->newMedicines[$key]);
-        }
-        $this->getSummaryData();
-    }
-
-    private function clearNewMedicineForm() :void
-    {
-        $this->reset([
-            'name', 'stock', 'storage', 'expired', 'description', 'purchase_price', 'selling_price', 'unit_id', 'category_id'
-        ]);
-    }
-
+    // Validation Medicine
     private function validateMedicine() : void
     {
         $this->validate([
@@ -157,31 +144,44 @@ class AddPurchase extends Component
             'category_id' => 'required|integer|exists:App\Models\Category,id',
         ]);
     }
+    // Unset Medicine
+    private function clearNewMedicineForm() :void
+    {
+        $this->reset([
+            'name', 'stock', 'storage', 'expired', 'description', 'purchase_price', 'selling_price', 'unit_id', 'category_id'
+        ]);
+    }
 
+    //Get Summary Data
     public function getSummaryData() :void
     {
         if($this->newMedicines == null){
             $this->reset('total_purchase', 'total_medicine', 'total_quantity', 'invoice');
             return ;
         }
+        $new_total_purchase = 0;
+        $new_total_quantity = 0;
         foreach($this->newMedicines as $key => $med){
-            $this->total_purchase += $med['purchase_price'] * $med['stock'];
-            $this->total_quantity += $med['stock'];
+            $new_total_purchase +=  $med['purchase_price'] * $med['stock'];
+            $new_total_quantity += $med['stock'];
         }
+        $this->total_purchase = $new_total_purchase;
+        $this->total_quantity = $new_total_quantity;
         $this->total_medicine = count($this->newMedicines);
         $this->invoice = $this->invoice == null ? Str::random(7) : $this->invoice;
     }
+    public function unsetAMedicine( array $med ) : void
+    {
+        // unset an item of medicine from $this->newMedicines
+        // return void
+        if( ($key = array_search($med, $this->newMedicines) ) !== false ) {
+            unset($this->newMedicines[$key]);
+        }
+        $this->getSummaryData();        # Dont use this function,
+    }
 
-    // public function selectPurchase( Purchase $purchase ) : void
-    // {
-    //     $this->purchase = $purchase->load('medicines');
-    // }
 
-    // public function selectMedicine( Medicine $medicine ) : void
-    // {
-    //     $this->selectedMedicine = $medicine;
-    // }
-
+            // Save Medicine Purchase
     public function saveMedicinePurchase()
     {
         // save purchase and all medicine data to database
